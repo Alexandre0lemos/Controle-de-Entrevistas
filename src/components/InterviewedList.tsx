@@ -95,7 +95,7 @@ const InterviewedList = ({ candidates, onBack }: InterviewedListProps) => {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-foreground">Relatório de Entrevistas</h1>
+          <h1 className="text-2xl font-bold text-foreground">Relatório Geral</h1>
           <p className="text-muted-foreground">
             Acompanhe o histórico e estatísticas das entrevistas realizadas
           </p>

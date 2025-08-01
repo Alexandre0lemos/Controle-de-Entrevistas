@@ -27,9 +27,11 @@ const ArrivedCandidatesList = ({ candidates, onBack, onUpdateStatus }: ArrivedCa
       case "waiting":
         return <Badge variant="secondary">Aguardando</Badge>;
       case "called":
-        return <Badge variant="default">Chamado</Badge>;
+        return <Badge variant="default">Na entrevista</Badge>;
       case "interviewed":
         return <Badge variant="outline" className="text-success border-success">Entrevistado</Badge>;
+      case "present":
+        return <Badge variant="default">Aguardando ser chamado</Badge>;
       case "no_show":
         return <Badge variant="destructive">Não compareceu</Badge>;
       default:
@@ -54,31 +56,21 @@ const ArrivedCandidatesList = ({ candidates, onBack, onUpdateStatus }: ArrivedCa
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-primary" />
-              <div>
-                <div className="text-2xl font-bold">{arrivedCandidates.length}</div>
-                <p className="text-sm text-muted-foreground">Total chegaram</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-warning" />
               <div>
                 <div className="text-2xl font-bold text-warning">
-                  {arrivedCandidates.filter(c => c.status === "waiting").length}
+                  {arrivedCandidates.filter(e => e.status === "present").length}
                 </div>
                 <p className="text-sm text-muted-foreground">Aguardando</p>
               </div>
             </div>
           </CardContent>
         </Card>
+
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-2">
@@ -97,7 +89,7 @@ const ArrivedCandidatesList = ({ candidates, onBack, onUpdateStatus }: ArrivedCa
       {/* Candidates List */}
       <Card>
         <CardHeader>
-          <CardTitle>Lista de Chegadas (em ordem cronológica)</CardTitle>
+          <CardTitle>Lista de Chegadas</CardTitle>
         </CardHeader>
         <CardContent>
           {arrivedCandidates.length === 0 ? (
@@ -107,7 +99,7 @@ const ArrivedCandidatesList = ({ candidates, onBack, onUpdateStatus }: ArrivedCa
             </div>
           ) : (
             <div className="space-y-3">
-              {arrivedCandidates.map((candidate, index) => (
+              {arrivedCandidates.filter(e => e.status !== "no_show").map((candidate, index) => (
                 <div
                   key={candidate.id}
                   className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"

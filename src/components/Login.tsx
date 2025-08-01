@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff, Lock, Mail, Users } from "lucide-react";
+import { Eye, EyeOff, Lock, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,12 +7,12 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoginProps {
-  onLogin: (email: string) => void;
+  onLogin: (user: string) => void;
 }
 
 const Login = ({ onLogin }: LoginProps) => {
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,32 +20,30 @@ const Login = ({ onLogin }: LoginProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!user || !password) {
       toast({
         title: "Campos obrigatórios",
-        description: "Por favor, preencha email e senha.",
+        description: "Por favor, preencha username e senha.",
         variant: "destructive",
       });
       return;
     }
 
-    // Simple validation for demo purposes
-    const validEmails = ["admin@entrevistas.com", "rh@empresa.com", "gestor@empresa.com"];
+    const validUsers = ["recep", "alexandre"];
     
     setIsLoading(true);
 
-    // Simulate API call
     setTimeout(() => {
-      if (validEmails.includes(email.toLowerCase()) && password.length >= 6) {
+      if (validUsers.includes(user.toLowerCase()) && password.length >= 6) {
         toast({
           title: "Login realizado com sucesso!",
-          description: `Bem-vindo ao sistema, ${email}`,
+          description: `Bem-vindo ao sistema, ${user}`,
         });
-        onLogin(email);
+        onLogin(user);
       } else {
         toast({
           title: "Credenciais inválidas",
-          description: "Email ou senha incorretos. Tente admin@entrevistas.com com qualquer senha (mín. 6 caracteres).",
+          description: "username ou senha incorretos. Tente novamente.",
           variant: "destructive",
         });
       }
@@ -74,17 +72,16 @@ const Login = ({ onLogin }: LoginProps) => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="username">Username</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                   <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="seu@email.com"
+                    id="username"
+                    type="username"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                    placeholder="Username"
                     className="pl-10"
                     required
                   />
@@ -130,15 +127,6 @@ const Login = ({ onLogin }: LoginProps) => {
                 {isLoading ? "Entrando..." : "Entrar no Sistema"}
               </Button>
             </form>
-
-            {/* Demo Info */}
-            {/* <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-              <h4 className="font-medium text-sm text-foreground mb-2">Credenciais para Demonstração:</h4>
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p><strong>Email:</strong> admin@entrevistas.com</p>
-                <p><strong>Senha:</strong> qualquer senha com 6+ caracteres</p>
-              </div>
-            </div> */}
           </CardContent>
         </Card>
 

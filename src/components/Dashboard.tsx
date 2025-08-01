@@ -6,6 +6,7 @@ import {
   Phone,
   BarChart3,
   Bell,
+  ClockAlert,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,7 @@ export interface Candidate {
   interviewDate: string;
   interviewTime: string;
   resumeUrl?: string;
-  status: "waiting" | "called" | "interviewed" | "no_show";
+  status: "waiting" | "called" | "interviewed" | "present" | "no_show";
   createdAt: string;
   calledAt?: string;
   arrivedAt?: string;
@@ -130,7 +131,7 @@ const Dashboard = () => {
         candidate.id === id
           ? {
               ...candidate,
-              status: attended ? "waiting" : "no_show",
+              status: attended ? "present" : "no_show",
               arrivedAt: attended ? new Date().toISOString() : undefined,
             }
           : candidate
@@ -152,7 +153,7 @@ const Dashboard = () => {
         new Date(a.arrivedAt!).getTime() - new Date(b.arrivedAt!).getTime()
     );
   // Só mostra candidatos que chegaram e estão aguardando para chamar
-  const nextCandidate = arrivedCandidates.find((c) => c.status === "waiting");
+  const nextCandidate = arrivedCandidates.find((c) => c.status === "present");
 
   const renderContent = () => {
     switch (activeView) {
@@ -263,16 +264,14 @@ const Dashboard = () => {
               <Card className="hover:shadow-md transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Chamados
+                    Na entrevista
                   </CardTitle>
-                  <Phone className="h-4 w-4 text-primary" />
+                  <ClockAlert className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-primary">
-                    {calledCandidates.length}
-                  </div>
+                  <div className="text-2xl font-bold">{candidates.filter(e => e.status === "called").length}</div>
                   <p className="text-xs text-muted-foreground">
-                    Já foram chamados
+                    Todos os registros
                   </p>
                 </CardContent>
               </Card>
@@ -294,6 +293,7 @@ const Dashboard = () => {
                   <p className="text-xs text-muted-foreground">Concluídas</p>
                 </CardContent>
               </Card>
+
             </div>
 
             {/* Call Next Section */}
@@ -394,7 +394,7 @@ const Dashboard = () => {
               >
                 <CardHeader className="text-center">
                   <Phone className="h-12 w-12 text-primary mx-auto mb-2" />
-                  <CardTitle>Candidatos Chamados</CardTitle>
+                  <CardTitle>Candidatos na Entrevista</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-muted-foreground mb-4">
@@ -402,7 +402,7 @@ const Dashboard = () => {
                   </p>
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <Badge variant="secondary">
-                      {calledCandidates.length} candidatos
+                      {calledCandidates.filter(e => e.status === "called").length} candidatos
                     </Badge>
                   </div>
                   <Button variant="outline" className="w-full">
@@ -417,7 +417,7 @@ const Dashboard = () => {
               >
                 <CardHeader className="text-center">
                   <BarChart3 className="h-12 w-12 text-primary mx-auto mb-2" />
-                  <CardTitle>Relatório de Entrevistas</CardTitle>
+                  <CardTitle>Relatório Geral</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-muted-foreground mb-4">

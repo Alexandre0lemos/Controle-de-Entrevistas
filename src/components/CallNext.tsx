@@ -145,19 +145,6 @@ const CallNext = ({ nextCandidate, onCallNext }: CallNextProps) => {
           <Phone className="h-5 w-5 mr-2" />
           Chamar {nextCandidate.name.split(' ')[0]}
         </Button>
-        <p className="text-sm text-muted-foreground mt-3">
-          Clique para chamar o próximo candidato e enviar notificação
-        </p>
-      </div>
-
-      {/* Instructions */}
-      <div className="bg-muted/50 rounded-lg p-4">
-        <h4 className="font-medium text-foreground mb-2">Instruções:</h4>
-        <ul className="text-sm text-muted-foreground space-y-1">
-          <li>• O candidato será notificado através de som e pop-up</li>
-          <li>• Após a chamada, o candidato será movido para a lista de "Chamados"</li>
-          <li>• Você poderá marcar como "Entrevistado" ou "Não Compareceu" posteriormente</li>
-        </ul>
       </div>
     </div>
   );
